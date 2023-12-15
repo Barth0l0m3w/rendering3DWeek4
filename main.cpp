@@ -88,6 +88,9 @@ int main () {
     glClearColor(0, 0, 0, 1);
     while (window.isOpen()) {
 
+        sf::Vector2<float> mousePosition = sf::Vector2<float>(sf::Mouse::getPosition(window));
+        sf::Vector2f divided = sf::Vector2f((mousePosition.x / window.getSize().x), mousePosition.y / window.getSize().y);
+
 		glClear( GL_COLOR_BUFFER_BIT );
 
         //tell the GPU to use this program
@@ -104,6 +107,10 @@ int main () {
         //checkerd spacing x and y
         glUniform1i(glGetUniformLocation(programID, "rows"), 5);
         glUniform1i(glGetUniformLocation(programID, "columns"), 6);
+
+        //mouseposition
+        glUniform2f(glGetUniformLocation(programID, "mousePosition"), divided.x, divided.y);
+        glUniform2f(glGetUniformLocation(programID, "resolution"), window.getSize().x, window.getSize().y);
 
         //get index for the attributes in the shader
         GLint vertexIndex = glGetAttribLocation(programID, "vertex");
