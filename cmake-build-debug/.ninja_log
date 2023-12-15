@@ -1,0 +1,4 @@
+# ninja log v5
+1	746	7243314222954363	CMakeFiles/rendering3DWeek4.dir/main.cpp.obj	dd4b627c76d6ea3
+5	754	7243314223014442	CMakeFiles/rendering3DWeek4.dir/ShaderUtil.cpp.obj	23c4776232772706
+754	1378	7243314225388713	rendering3DWeek4.exe	8c07b6918a83a9fc
