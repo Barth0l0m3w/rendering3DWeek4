@@ -41,7 +41,11 @@ int main () {
 		//1 triangle, 3 vertices per triangle, 3 floats per vertex = 9 floats in total
 		-0.5f, -0.5f, 0,
 		0.5f, -0.5f, 0,
-		-0.5f, 0.5f, 0
+		-0.5f, 0.5f, 0,
+
+        0.5f, 0.5f, 0,
+        -0.5f, 0.5f, 0,
+        0.5f, -0.5f, 0,
 	};
 
 	//create a handle to the buffer
@@ -58,9 +62,13 @@ int main () {
 
     const GLfloat colors[] {
         //1 triangle, 3 vertices per triangle, 1 color per vertex, 3 "floats" per color RGB = 9 floats in total
+        0,0,0,
         1,0,0,
         0,1,0,
-        0,0,1
+
+        1,1,0,
+        0,1,0,
+        1,0,0,
     };
 
 	//create a handle to the buffer
@@ -89,6 +97,14 @@ int main () {
 		float elapsedTime = clock.getElapsedTime().asSeconds();
 		glUniform2f(glGetUniformLocation(programID, "offset"), 0.5f*cos(elapsedTime), 0.5f*sin(elapsedTime));
 
+        //colour uniforms
+        glUniform3f(glGetUniformLocation(programID, "whiteColor"), 1,1,1);
+        glUniform3f(glGetUniformLocation(programID, "BlackColor"), 0, 0, 0);
+
+        //checkerd spacing x and y
+        glUniform1i(glGetUniformLocation(programID, "rows"), 5);
+        glUniform1i(glGetUniformLocation(programID, "columns"), 6);
+
         //get index for the attributes in the shader
         GLint vertexIndex = glGetAttribLocation(programID, "vertex");
 		GLint colorIndex = glGetAttribLocation(programID, "color");
@@ -111,7 +127,7 @@ int main () {
 		glVertexAttribPointer(colorIndex, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 		//Draws elements from each enabled array using the specified mode (which is default for Unity etc as well)
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         glDisableVertexAttribArray (vertexIndex);
         glDisableVertexAttribArray (colorIndex);

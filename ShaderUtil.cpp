@@ -44,7 +44,7 @@ GLuint ShaderUtil::_loadShader (const string& pShaderPath, GLenum pShaderType) {
     buffer << sourceFile.rdbuf();
     sourceFile.close();
 	
-    //dump source on the output stream so we can see it
+    //dump source on the output stream, so we can see it
     string source = buffer.str();
     cout << source;
     cout << "-----------------------------------" << endl;
