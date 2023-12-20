@@ -89,13 +89,6 @@ int main () {
     glClearColor(0, 0, 0, 1);
     while (window.isOpen()) {
 
-        sf::Vector2<float> mousePosition = sf::Vector2<float>(sf::Mouse::getPosition(window));
-        sf::Vector2f divided = sf::Vector2f((mousePosition.x / window.getSize().x), mousePosition.y / window.getSize().y);
-
-        float mouseX = sf::Mouse::getPosition(window).x;
-        float mouseY = -sf::Mouse::getPosition(window).y + 600;
-
-
 		glClear( GL_COLOR_BUFFER_BIT );
 
         //tell the GPU to use this program
@@ -110,7 +103,6 @@ int main () {
         glUniform3f(glGetUniformLocation(programID, "BlackColor"), 0, 0, 0);
 
         //scaling
-
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { scale += 0.1f; }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { scale -= 0.1f; }
 
@@ -121,8 +113,10 @@ int main () {
         glUniform1i(glGetUniformLocation(programID, "columns"), 6);
 
         //mouseposition
+        float mouseX = sf::Mouse::getPosition(window).x;
+        float mouseY = -sf::Mouse::getPosition(window).y + 600;
+
         glUniform2f(glGetUniformLocation(programID, "mousePos"), mouseX, mouseY);
-        glUniform2f(glGetUniformLocation(programID, "resolution"), window.getSize().x, window.getSize().y);
 
         //get index for the attributes in the shader
         GLint vertexIndex = glGetAttribLocation(programID, "vertex");
