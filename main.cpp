@@ -8,6 +8,7 @@
  * In a real life example, this code should include error checking and refactor into classes/functions.
  * In addition VAO's are missing.
  */
+float scale = 1;
 
 int main () {
     //Open SFML Window == Valid OpenGL Context
@@ -66,7 +67,7 @@ int main () {
         1,0,0,
         0,1,0,
 
-        1,1,0,
+        1, 1,0,
         0,1,0,
         1,0,0,
     };
@@ -101,9 +102,21 @@ int main () {
         glUniform3f(glGetUniformLocation(programID, "whiteColor"), 1,1,1);
         glUniform3f(glGetUniformLocation(programID, "BlackColor"), 0, 0, 0);
 
+        //scaling
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { scale += 0.1f; }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { scale -= 0.1f; }
+
+        glUniform1f(glGetUniformLocation(programID, "scaling"),scale);
+
         //checkerd spacing x and y
         glUniform1i(glGetUniformLocation(programID, "rows"), 5);
         glUniform1i(glGetUniformLocation(programID, "columns"), 6);
+
+        //mouseposition
+        float mouseX = sf::Mouse::getPosition(window).x;
+        float mouseY = -sf::Mouse::getPosition(window).y + 600;
+
+        glUniform2f(glGetUniformLocation(programID, "mousePos"), mouseX, mouseY);
 
         //get index for the attributes in the shader
         GLint vertexIndex = glGetAttribLocation(programID, "vertex");
