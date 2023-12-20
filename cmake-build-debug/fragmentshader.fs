@@ -2,6 +2,8 @@
 
 in vec3 fColor;
 in float fScale;
+in vec2 fMouse;
+in vec2 fResolution;
 
 out vec4 sColor;
 
@@ -9,36 +11,43 @@ uniform vec3 blackColor;
 uniform vec3 whiteColor;
 uniform int rows;
 uniform int columns;
-uniform vec2 fMouse;
-uniform vec2 fResolution;;
+uniform vec2 mousePos;
 
 
 vec3 checkerdPattern(vec3 color){
 
     vec3 mColor = color;
+    if (mColor.x < 0) { mColor.x -= 1;}
+    if (mColor.y < 0) { mColor.y += 1;}
+
     mColor.x *= rows;
     mColor.y *= columns;
     vec3 resultColor;
 
-    if(int(mColor.x) % 2 == 0 && int(mColor.y) % 2 == 0){
-        resultColor = vec3(blackColor);
-    }
-    else if(int(mColor.x) % 2 != 0 && int(mColor.y) % 2 != 0){
-        resultColor = vec3(blackColor);
-    } else{
-        resultColor = vec3(whiteColor);
-    }
+    if(int(mColor.x) % 2 == int(mColor.y) % 2){
+    resultColor = vec3(blackColor);} else{
+    resultColor = vec3(whiteColor);}
+
+    //if(int(mColor.x) % 2 == 0 && int(mColor.y) % 2 == 0){
+      //  resultColor = vec3(blackColor);
+    //}
+    //else if(int(mColor.x) % 2 != 0 && int(mColor.y) % 2 != 0){
+      //  resultColor = vec3(blackColor);
+    //} else{
+      //  resultColor = vec3(whiteColor);
+    //}
     return resultColor;
 }
 
 //vec3 pointLight(vec3 color){
 //}
 
-vec2 scaleAroundPoint(vec2 uv, float scale) {
-	//With out offset the scale happens from the lower left corner.
-	vec2 offset = vec2(0.5, 0.5);
+vec3 scaleAroundPoint(vec3 color, float scale) {
 
-	vec2 result = uv - offset;
+	//With out offset the scale happens from the lower left corner.
+	vec3 offset = vec3(0.5, 0.5, 0);
+
+	vec3 result = color - offset;
 	result *= scale;
 	result += offset;
 
@@ -46,6 +55,8 @@ vec2 scaleAroundPoint(vec2 uv, float scale) {
 }
 
 void main (void) {
+
+    vec3 color = scaleAroundPoint(fColor, fScale);
 
     //sColor = fColor;
     //vec2 uv = fColor.xz;
@@ -57,17 +68,21 @@ void main (void) {
     //uv = scaleAroundPoint(uv, fScale);
 
     // vec2 fragCoord = gl_FragCoord.xy;
-    //float mouseDistance = distance(fragCoord, mousePos);
+    vec2 mouseOffset =  gl_FragCoord.xy - mousePos;
+    float distance = sqrt((mouseOffset.x * mouseOffset.x) + (mouseOffset.y * mouseOffset.y));
+    distance = clamp(distance / 300.f, 0, 1.0f);
 
-    //float maxDistance = length(screenSize);
-    //float brightness = 1.0 - (mouseDistance / maxDistance);
+    //float maxDistance = length(fResolution);
+    //float brightness = 1.0 - (distance / maxDistance);
     //brightness = clamp(brightness, 0.0, 1.0);
     //sColor = vec4(fColor,1);
 
     //vec4 tempColor = vec4(color, color, color, 1);
 	//tempColor.xyz -= d;
 
-    sColor = vec4(checkerdPattern(fColor),1);
+    sColor = vec4(checkerdPattern(color),1);
+
+    sColor.xyz -= distance;
 
 }
 
